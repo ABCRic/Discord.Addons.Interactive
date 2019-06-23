@@ -45,20 +45,29 @@ namespace Discord.Addons.Interactive
             // Reactions take a while to add, don't wait for them
             _ = Task.Run(async () =>
             {
-                await message.AddReactionAsync(options.First);
-                await message.AddReactionAsync(options.Back);
-                await message.AddReactionAsync(options.Next);
-                await message.AddReactionAsync(options.Last);
+                if(options.First != null)
+                    await message.AddReactionAsync(options.First);
+                if (options.Back != null)
+                    await message.AddReactionAsync(options.Back);
+                if (options.Next != null)
+                    await message.AddReactionAsync(options.Next);
+                if (options.Last != null)
+                    await message.AddReactionAsync(options.Last);
 
                 var manageMessages = (Context.Channel is IGuildChannel guildChannel)
                     ? (Context.User as IGuildUser).GetPermissions(guildChannel).ManageMessages
                     : false;
 
-                if (options.JumpDisplayOptions == JumpDisplayOptions.Always
+                if ((options.JumpDisplayOptions == JumpDisplayOptions.Always
                     || (options.JumpDisplayOptions == JumpDisplayOptions.WithManageMessages && manageMessages))
+                    && options.Jump != null)
+                {
                     await message.AddReactionAsync(options.Jump);
+                }
 
-                await message.AddReactionAsync(options.Stop);
+
+                if (options.Stop != null)
+                    await message.AddReactionAsync(options.Stop);
 
                 if (options.DisplayInformationIcon)
                     await message.AddReactionAsync(options.Info);
