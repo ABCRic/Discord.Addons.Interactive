@@ -57,9 +57,7 @@ namespace Discord.Addons.Interactive
                 if (options.Last != null)
                     await message.AddReactionAsync(options.Last);
 
-                var manageMessages = (Context.Channel is IGuildChannel guildChannel)
-                    ? (Context.User as IGuildUser).GetPermissions(guildChannel).ManageMessages
-                    : false;
+                var manageMessages = (Context.Channel is IGuildChannel guildChannel) && ((IGuildUser)Context.User).GetPermissions(guildChannel).ManageMessages;
 
                 if ((options.JumpDisplayOptions == JumpDisplayOptions.Always
                     || (options.JumpDisplayOptions == JumpDisplayOptions.WithManageMessages && manageMessages))

@@ -69,7 +69,7 @@ namespace Discord.Addons.Interactive
 
             var trigger = eventTrigger.Task;
             var cancel = cancelTrigger.Task;
-            var delay = Task.Delay(timeout.Value);
+            var delay = Task.Delay(timeout.Value, token);
             var task = await Task.WhenAny(trigger, delay, cancel).ConfigureAwait(false);
 
             context.Client.MessageReceived -= Handler;
